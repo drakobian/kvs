@@ -2,6 +2,8 @@
 name = "kvs"
 version = "0.1.0"
 edition = "2021"
+authors = ["Drake Bennion <drake.bennion@gmail.com>"]
+description = "A key-value store, implementing PingCAP's talent plan KVS"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
