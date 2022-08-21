@@ -7,8 +7,8 @@ use clap::{Parser, ValueEnum};
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
 enum Command {
     Get,
-    Set, 
-    Rm
+    Set,
+    Rm,
 }
 
 #[derive(Parser, Debug)]
@@ -24,25 +24,19 @@ struct Args {
 
     /// The value to optionally use
     #[clap(value_parser)]
-    value: Option<String>
+    value: Option<String>,
 }
 
 fn main() {
     let args = Args::parse();
-    //println!("{:?}", args); 
 
     let mut kvs = KvStore::new();
 
     match args.cmd {
-        Command::Get => { 
+        Command::Get => {
             kvs.get(args.key);
-            ()
-        },
-        Command::Set => {
-            kvs.set(args.key, args.value.unwrap())
-        },
-        Command::Rm  => {
-            kvs.remove(args.key)
         }
+        Command::Set => kvs.set(args.key, args.value.unwrap()),
+        Command::Rm => kvs.remove(args.key),
     }
 }

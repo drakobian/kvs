@@ -7,7 +7,7 @@ use std::collections::HashMap;
 /// a simple key-value store
 /// mapping String keys to String values
 pub struct KvStore {
-    map: HashMap<String, String>
+    map: HashMap<String, String>,
 }
 
 impl KvStore {
@@ -18,7 +18,9 @@ impl KvStore {
     ///     let mut kvs = KvStore::new();
     /// # }
     pub fn new() -> KvStore {
-        KvStore { map: HashMap::new() } 
+        KvStore {
+            map: HashMap::new(),
+        }
     }
 
     /// Sets a key in the store to the given value
@@ -30,7 +32,7 @@ impl KvStore {
     ///     kvs.set("my_cool_key".into(), "my_cool_value".into());
     /// # }
     pub fn set(&mut self, key: String, value: String) {
-       self.map.insert(key, value);
+        self.map.insert(key, value);
     }
 
     /// Gets a value in the store from the given key
@@ -56,5 +58,11 @@ impl KvStore {
     /// # }
     pub fn remove(&mut self, key: String) {
         self.map.remove(&key);
+    }
+}
+
+impl Default for KvStore {
+    fn default() -> Self {
+        Self::new()
     }
 }
