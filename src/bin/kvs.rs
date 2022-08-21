@@ -1,30 +1,39 @@
 use kvs::KvStore;
 
-use clap::{Parser, ValueEnum};
+use clap::{Parser, Subcommand};
 
-// TODO: Validate that key is always given,
-// and that value is given for Set
-#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
+#[derive(Subcommand)]
 enum Command {
-    Get,
-    Set,
-    Rm,
+    /// Get a value by the given key
+    Get {
+        /// The key to search for
+        #[clap(value_parser)]
+        key: String,
+    },
+    /// Set a value at the given key
+    Set {
+        /// The key to insert
+        #[clap(value_parser)]
+        key: String,
+
+        /// The value to insert at the given key
+        #[clap(value_parser)]
+        value: String,
+    },
+    /// Remove a value by the given key
+    Rm {
+        /// The key to remove
+        #[clap(value_parser)]
+        key: String,
+    },
 }
 
-#[derive(Parser, Debug)]
+#[derive(Parser)]
 #[clap(author, version, about, long_about = None)]
 struct Args {
     /// The command to run
-    #[clap(arg_enum, value_parser)]
+    #[clap(subcommand)]
     cmd: Command,
-
-    /// The key to use
-    #[clap(value_parser)]
-    key: String,
-
-    /// The value to optionally use
-    #[clap(value_parser)]
-    value: Option<String>,
 }
 
 fn main() {
@@ -33,10 +42,10 @@ fn main() {
     let mut kvs = KvStore::new();
 
     match args.cmd {
-        Command::Get => {
-            kvs.get(args.key);
+        Command::Get { key } => {
+            kvs.get(key);
         }
-        Command::Set => kvs.set(args.key, args.value.unwrap()),
-        Command::Rm => kvs.remove(args.key),
+        Command::Set { key, value } => kvs.set(key, value),
+        Command::Rm { key } => kvs.remove(key),
     }
 }
